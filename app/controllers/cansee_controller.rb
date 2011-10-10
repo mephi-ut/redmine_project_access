@@ -21,7 +21,8 @@ class CanseeController < ApplicationController
       ProjectNonMemberUser.transaction do
         project = Project.find(:first, :conditions => { :id => params[:project_id]})
         ProjectNonMemberUser.delete_all(:project_id => project.id)
-        user_ids = params[:user_ids]
+        user_ids = []
+        user_ids = params[:user_ids] if params[:user_ids]
         user_ids.each do |user_id|
           pnmu = ProjectNonMemberUser.new
           pnmu.user_id = user_id
