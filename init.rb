@@ -12,8 +12,10 @@ Redmine::Plugin.register :redmine_cansee do
 
 #  permission :cansee, { :cansee => :index }
 
-  permission :view_cansee, :cansee => :index
-  permission :edit_cansee, :cansee => :update
+  project_module :redmine_cansee do
+    permission :view_cansee, :cansee => :index
+    permission :edit_cansee, :cansee => :update
+  end
   menu :project_menu, :cansee, { :controller => 'cansee', :action => 'index' }, :caption => 'Can See', :before => :settings, :param => :project_id
 end
 
