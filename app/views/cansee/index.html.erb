@@ -1,0 +1,18 @@
+<h2>Cansee#index</h2>
+
+<% form_tag :action => :update, :method => :post do %>
+<%= hidden_field_tag('project_id', @project.id) %>
+<ul>
+  <% @can_see.each do |cs| %>
+    <li><%= h(cs.name) %><%= check_box_tag 'user_ids[]', h(cs.id), :checked => 'yes' %></li>
+  <% end %>
+    <li>&nbsp;</li>
+  <% @cant_see.each do |cs| %>
+    <li><%= h(cs.name) %><%= check_box_tag 'user_ids[]', h(cs.id) %></li>
+  <% end %>
+</ul>
+
+<%= submit_tag "Save" %>
+
+<% end %>
+
