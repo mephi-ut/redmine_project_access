@@ -13,6 +13,6 @@ Redmine::Plugin.register :redmine_cansee do
   project_module :redmine_cansee do
     permission :edit_cansee, { :cansee => [:index, :update, :autocomplete_for_users] }
   end
-  menu :project_menu, :cansee, { :controller => 'cansee', :action => 'index' }, :caption => 'Can See', :before => :settings, :param => :project_id
+  menu :project_menu, :cansee, { :controller => 'cansee', :action => 'index' }, :caption => :can_see, :before => :settings, :param => :project_id
 end
 
