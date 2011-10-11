@@ -1,3 +1,12 @@
 = redmine_project_access
 
-Description goes here
+Redmine plugin for adding hidden users to project.
+
+= install
+
+put to vendor/plugins/
+and run: rake db:migrate_plugins
+
+= configure
+
+Go to project modules and enable.
