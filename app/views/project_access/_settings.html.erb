@@ -1,0 +1,30 @@
+<div style="width: 200px">
+  <% form_tag :controller => 'project_access', :action => :update, :method => :post do %>
+  <%= hidden_field_tag('project_id', @project.id) %>
+  <ul>
+    <% @project.project_non_member_users.each do |cs| %>
+      <% if cs.user_id %>
+        <li><label><%= h(cs.user.name) %><%= check_box_tag 'user_ids[]', h(cs.user.id), :checked => 'yes' %></label></li>
+      <% end %>
+    <% end %>
+    <% @project.project_non_member_users.each do |cs| %>
+      <% if cs.group_id %>
+        <li><label><%= h(cs.group.name) %><%= check_box_tag 'user_ids[]', h(cs.group.id), :checked => 'yes' %></label></li>
+      <% end %>
+    <% end %>
+  </ul>
+  <p><%= label_tag "principal_search2", l(:label_principal_search) %><%= text_field_tag 'principal_search2', nil %></p>
+  <%= observe_field(:principal_search2,
+                    :frequency => 0.5,
+                    :update => :principals2,
+                    :url => { :controller => 'project_access', :action => 'autocomplete_for_users' },
+                    :with => 'q') %>
+  <div id="principals2">
+    &nbsp;
+  </div>
+
+  <%= submit_tag l(:button_save) %>
+
+  <% end %>
+</div>
+

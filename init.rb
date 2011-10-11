@@ -1,6 +1,7 @@
 require 'redmine'
 
 require 'project_patch'
+require 'projects_helper_patch'
 
 Redmine::Plugin.register :redmine_project_access do
   name 'Redmine Cansee plugin'
