@@ -13,7 +13,7 @@
   <%= observe_field(:principal_search,
                     :frequency => 0.5,
                     :update => :principals,
-                    :url => { :controller => 'cansee', :action => 'autocomplete_for_users' },
+                    :url => { :controller => 'project_access', :action => 'autocomplete_for_users' },
                     :with => 'q') %>
   <div id="principals">
     &nbsp;

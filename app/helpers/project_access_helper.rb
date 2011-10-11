@@ -1,4 +1,4 @@
-module CanSeeHelper
+module ProjectAccessHelper
   # based on ApplicationHelper#principals_check_box_tags
   def users_check_box_tags(name, principals)
     s = ''

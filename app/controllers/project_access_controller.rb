@@ -1,8 +1,8 @@
-class CanseeController < ApplicationController
+class ProjectAccessController < ApplicationController
   unloadable
 
-  include CanSeeHelper
-  helper :can_see
+  include ProjectAccessHelper
+  helper :project_access
 
   before_filter :find_project, :except => :autocomplete_for_users
   before_filter :authorize, :except => :autocomplete_for_users
