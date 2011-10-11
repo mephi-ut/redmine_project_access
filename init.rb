@@ -10,11 +10,8 @@ Redmine::Plugin.register :redmine_cansee do
   url 'http://example.com/path/to/plugin'
   author_url 'http://example.com/about'
 
-#  permission :cansee, { :cansee => :index }
-
   project_module :redmine_cansee do
-    permission :view_cansee, :cansee => :index
-    permission :edit_cansee, :cansee => :update
+    permission :edit_cansee, { :cansee => [:index, :update, :autocomplete_for_users] }
   end
   menu :project_menu, :cansee, { :controller => 'cansee', :action => 'index' }, :caption => 'Can See', :before => :settings, :param => :project_id
 end

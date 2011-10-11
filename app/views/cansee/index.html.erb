@@ -4,14 +4,27 @@
 <%= hidden_field_tag('project_id', @project.id) %>
 <ul>
   <% @can_see.each do |cs| %>
-    <li><%= h(cs.name) %><%= check_box_tag 'user_ids[]', h(cs.id), :checked => 'yes' %></li>
+    <li><label><%= h(cs.name) %><%= check_box_tag 'user_ids[]', h(cs.id), :checked => 'yes' %></label></li>
   <% end %>
+</ul>
+<p><%= label_tag "principal_search", l(:label_principal_search) %><%= text_field_tag 'principal_search', nil %></p>
+<%= observe_field(:principal_search,
+                 :frequency => 0.5,
+                 :update => :principals,
+                 :url => { :controller => 'cansee', :action => 'autocomplete_for_users' },
+                 :with => 'q') %>
+<div id="principals">
+  &nbsp;
+</div>
+
+<%= submit_tag "Add" %>
+<!--<ul>
   <% @cant_see.each do |cs| %>
-    <li><%= h(cs.name) %><%= check_box_tag 'user_ids[]', h(cs.id) %></li>
+    <li><label><%= h(cs.name) %><%= check_box_tag 'user_ids[]', h(cs.id) %></label></li>
   <% end %>
 </ul>
 
-<%= submit_tag "Save" %>
+<%= submit_tag "Save" %>-->
 
 <% end %>
 

@@ -1,8 +1,8 @@
 class CanseeController < ApplicationController
   unloadable
 
-  before_filter :find_project
-  before_filter :authorize
+  before_filter :find_project, :except => :autocomplete_for_users
+  before_filter :authorize, :except => :autocomplete_for_users
 
   def index
     @project = Project.find(params[:project_id])
@@ -32,6 +32,11 @@ class CanseeController < ApplicationController
       end
     end
     redirect_to :back
+  end
+
+  def autocomplete_for_users
+    @users = User.like(params[:q]).active.find(:all)
+    render :layout => false
   end
 
 private
