@@ -7,7 +7,7 @@ Redmine::Plugin.register :redmine_project_access do
   name 'Redmine Cansee plugin'
   author 'Igor Zubkov'
   description 'This is a plugin for Redmine adds hidden users for project'
-  version '0.0.3'
+  version '0.0.4'
   url 'http://example.com/path/to/plugin'
   author_url 'http://example.com/about'
 
