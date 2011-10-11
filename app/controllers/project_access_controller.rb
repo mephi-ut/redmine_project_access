@@ -31,7 +31,7 @@ class ProjectAccessController < ApplicationController
         end
       end
     end
-    redirect_to :back
+    redirect_to(:controller => 'projects', :action => 'settings', :id => @project, :tab => 'project_access')
   end
 
   def autocomplete_for_users
