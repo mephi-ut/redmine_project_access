@@ -1,9 +1,6 @@
 class ProjectAccessController < ApplicationController
   unloadable
 
-  include ProjectAccessHelper
-  helper :project_access
-
   before_filter :find_project, :except => :autocomplete_for_users
   before_filter :authorize, :except => :autocomplete_for_users
 
