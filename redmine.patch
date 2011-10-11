@@ -1,0 +1,33 @@
+Index: app/models/user.rb
+===================================================================
+--- app/models/user.rb	(revision 6543)
++++ app/models/user.rb	(working copy)
+@@ -419,7 +419,7 @@
+       roles = roles_for_project(context)
+       return false unless roles
+       roles.detect {|role|
+-        (context.is_public? || role.member?) &&
++        (context.is_public? || role.member? || context.check_for_non_member(User.current)) &&
+         role.allowed_to?(action) &&
+         (block_given? ? yield(role, self) : true)
+       }
+Index: app/models/project.rb
+===================================================================
+--- app/models/project.rb	(revision 6543)
++++ app/models/project.rb	(working copy)
+@@ -165,7 +165,14 @@
+       unless options[:member]
+         role = user.logged? ? Role.non_member : Role.anonymous
+         if role.allowed_to?(permission)
+-          statement_by_role[role] = "#{Project.table_name}.is_public = #{connection.quoted_true}"
++          statement_by_role[role] = "(#{Project.table_name}.is_public = #{connection.quoted_true}) OR \
++          (projects.id IN (SELECT projects.id \
++                           FROM projects, project_non_member_users \
++                           WHERE projects.id = project_non_member_users.project_id \
++                           AND (project_non_member_users.user_id = #{User.current.id} \
++                           OR project_non_member_users.group_id IN (#{User.current.groups.map(&:id)}))\
++                           ) \
++                          )"
+         end
+       end
+       if user.logged?
