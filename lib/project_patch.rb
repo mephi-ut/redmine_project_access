@@ -7,7 +7,14 @@ module ProjectPatch
 
   module InstanceMethods
     def check_for_non_member(user)
-      return true if ProjectNonMemberUser.find(:first, :conditions => { :project_id => self.id, :user_id => user.id })
+      return true if ProjectNonMemberUser.find(:first,
+                                               :conditions => {
+                                                 :project_id => self.id,
+                                                 :user_id => user.id })
+      return true if ProjectNonMemberUser.find(:first,
+                                               :conditions =>
+                                                 ["project_id = ? AND group_id IN (?)",
+                                                 self.id, User.current.groups.map(&:id)])
       false
     end
   end

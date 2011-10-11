@@ -1,18 +1,17 @@
 class CanseeController < ApplicationController
   unloadable
 
+  include CanSeeHelper
+  helper :can_see
+
   before_filter :find_project, :except => :autocomplete_for_users
   before_filter :authorize, :except => :autocomplete_for_users
 
   def index
     @project = Project.find(params[:project_id])
     @pnmu = ProjectNonMemberUser.find(:all, :conditions => { :project_id => @project.id})
-    @can_see = User.find(:all, :conditions => ["id IN (?)", @pnmu.map(&:user_id)])
-    if @pnmu.map(&:user_id) == []
-      @cant_see = User.find(:all)
-    else
-      @cant_see = User.find(:all, :conditions => ["id NOT IN (?)", @pnmu.map(&:user_id)])
-    end
+    @can_see_users = User.find(:all, :conditions => ["id IN (?)", @pnmu.map(&:user_id)])
+    @can_see_groups = Group.find(:all, :conditions => ["id IN (?)", @pnmu.map(&:group_id)])
   end
 
   def update
@@ -25,7 +24,11 @@ class CanseeController < ApplicationController
         user_ids = params[:user_ids] if params[:user_ids]
         user_ids.each do |user_id|
           pnmu = ProjectNonMemberUser.new
-          pnmu.user_id = user_id
+          if user = User.find(:first, :conditions => {:id => user_id})
+            pnmu.user_id = user.id
+          elsif group = Group.find(:first, :conditions => {:id => user_id})
+            pnmu.group_id = group.id
+          end
           pnmu.project_id = project.id
           pnmu.save!
         end
@@ -35,7 +38,7 @@ class CanseeController < ApplicationController
   end
 
   def autocomplete_for_users
-    @users = User.like(params[:q]).active.find(:all)
+    @users = Principal.like(params[:q]).active.find(:all)
     render :layout => false
   end
 

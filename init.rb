@@ -5,7 +5,7 @@ require 'project_patch'
 Redmine::Plugin.register :redmine_cansee do
   name 'Redmine Cansee plugin'
   author 'Igor Zubkov'
-  description 'This is a plugin for Redmine'
+  description 'This is a plugin for Redmine adds hidden users for project'
   version '0.0.1'
   url 'http://example.com/path/to/plugin'
   author_url 'http://example.com/about'
