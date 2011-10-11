@@ -14,6 +14,5 @@ Redmine::Plugin.register :redmine_project_access do
   project_module :redmine_project_access do
     permission :edit_project_access, { :project_access => [:index, :update, :autocomplete_for_users] }
   end
-  menu :project_menu, :project_access, { :controller => 'project_access', :action => 'index' }, :caption => :label_project_access, :before => :settings, :param => :project_id
 end
 

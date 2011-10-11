@@ -4,13 +4,6 @@ class ProjectAccessController < ApplicationController
   before_filter :find_project, :except => :autocomplete_for_users
   before_filter :authorize, :except => :autocomplete_for_users
 
-  def index
-    @project = Project.find(params[:project_id])
-    @pnmu = ProjectNonMemberUser.find(:all, :conditions => { :project_id => @project.id})
-    @can_see_users = User.find(:all, :conditions => ["id IN (?)", @pnmu.map(&:user_id)])
-    @can_see_groups = Group.find(:all, :conditions => ["id IN (?)", @pnmu.map(&:group_id)])
-  end
-
   def update
     @project = Project.find(params[:project_id])
     if request.post?
