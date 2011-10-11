@@ -3,6 +3,9 @@ require_dependency 'project'
 module ProjectPatch
   def self.included(base)
     base.send(:include, InstanceMethods)
+    base.class_eval do
+      has_many :project_non_member_users
+    end
   end
 
   module InstanceMethods
