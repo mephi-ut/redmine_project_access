@@ -12,7 +12,9 @@ module ProjectsHelperPatch
                    :action => :index,
                    :partial => 'project_access/settings',
                    :label => :label_project_access }
-        tabs << action if !@project.is_public && @project.module_enabled?('redmine_project_access')
+        tabs << action if !@project.is_public &&
+                          @project.module_enabled?('redmine_project_access') &&
+                          (User.current.admin? || User.current.allowed_to?(:edit_project_access, @project))
         return tabs
       end
 
