@@ -3,11 +3,8 @@ require_dependency 'user'
 module UserPatch
   def self.included(base)
     base.class_eval do
-      alias_method :rpa_allowed_to?, :allowed_to? unless method_defined? :rpa_allowed_to?
-
       def allowed_to?(action, context, options={}, &block)
-        result = rpa_allowed_to?(action, context, options, &block)
-        if !result && context && context.is_a?(Project)
+        if context && context.is_a?(Project)
           # No action allowed on archived projects
           return false unless context.active?
           # No action allowed on disabled modules
@@ -22,6 +19,26 @@ module UserPatch
             role.allowed_to?(action) &&
             (block_given? ? yield(role, self) : true)
           }
+        elsif context && context.is_a?(Array)
+          # Authorize if user is authorized on every element of the array
+          context.map do |project|
+            allowed_to?(action, project, options, &block)
+          end.inject do |memo,allowed|
+            memo && allowed
+          end
+        elsif options[:global]
+          # Admin users are always authorized
+          return true if admin?
+
+          # authorize if user has at least one role that has this permission
+          roles = memberships.collect {|m| m.roles}.flatten.uniq
+          roles << (self.logged? ? Role.non_member : Role.anonymous)
+          roles.detect {|role|
+            role.allowed_to?(action) &&
+            (block_given? ? yield(role, self) : true)
+          }
+        else
+          false
         end
       end
     end
