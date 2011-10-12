@@ -35,11 +35,11 @@ module ProjectPatch
             role = user.logged? ? Role.non_member : Role.anonymous
             if role.allowed_to?(permission)
               statement_by_role[role] = "(#{Project.table_name}.is_public = #{connection.quoted_true}) OR \
-              (projects.id IN (SELECT projects.id \
-                               FROM projects, project_non_member_users \
-                               WHERE projects.id = project_non_member_users.project_id \
-                               AND (project_non_member_users.user_id = #{User.current.id} \
-                               OR project_non_member_users.group_id IN (#{User.current.groups.map(&:id)}))\
+              (projects.id IN (SELECT #{Project.table_name}.id \
+                               FROM #{Project.table_name}, #{ProjectNonMemberUser.table_name} \
+                               WHERE #{Project.table_name}.id = #{ProjectNonMemberUser.table_name}.project_id \
+                               AND (#{ProjectNonMemberUser.table_name}.user_id = #{user.id} \
+                               OR #{ProjectNonMemberUser.table_name}.group_id IN (#{user.groups.map(&:id).join(',')}))\
                                ) \
                               )"
             end
@@ -78,7 +78,7 @@ module ProjectPatch
       return true if ProjectNonMemberUser.find(:first,
                                                :conditions =>
                                                  ["project_id = ? AND group_id IN (?)",
-                                                 self.id, User.current.groups.map(&:id)])
+                                                 self.id, user.groups.map(&:id)])
       false
     end
   end
