@@ -12,7 +12,7 @@ Redmine::Plugin.register :redmine_project_access do
   author_url 'http://example.com/about'
 
   project_module :redmine_project_access do
-    permission :edit_project_access, { :project_access => [:index, :update, :autocomplete_for_users] }
+    permission :edit_project_access, { :project_access => [:update, :autocomplete_for_users] }
   end
 end
 
