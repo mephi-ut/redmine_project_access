@@ -1,5 +1,6 @@
 require 'redmine'
 
+require 'user_patch'
 require 'project_patch'
 require 'projects_helper_patch'
 
