@@ -1,6 +1,7 @@
 = redmine_project_access
 
 Redmine plugin for adding hidden users to project.
+Hidden users can see all non private issues.
 
 = install
 
