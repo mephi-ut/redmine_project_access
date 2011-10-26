@@ -77,10 +77,12 @@ module ProjectPatch
                                      :user_id => user.id })
         return true
       end
-      return true if ProjectNonMemberUser.find(:first,
-                                               :conditions =>
-                                                 ["project_id = ? AND group_id IN (?)",
-                                                 self.id, user.groups.map(&:id)])
+      if ProjectNonMemberUser.find(:first,
+                                   :conditions =>
+                                     ["project_id = ? AND group_id IN (?)",
+                                     self.id, user.groups.map(&:id)])
+        return true
+      end
       false
     end
   end
