@@ -36,7 +36,7 @@ module ProjectPatch
             if role.allowed_to?(permission)
               statement_by_role[role] = "#{Project.table_name}.is_public = #{connection.quoted_true}"
 
-              if !user.groups.empty?
+              unless user.groups.empty?
                 group_statement = " OR #{ProjectNonMemberUser.table_name}.group_id IN (#{user.groups.map(&:id).join(',')})"
               end
 
