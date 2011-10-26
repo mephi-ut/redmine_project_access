@@ -5,7 +5,7 @@ require 'project_patch'
 require 'projects_helper_patch'
 
 Redmine::Plugin.register :redmine_project_access do
-  name 'Redmine Cansee plugin'
+  name 'Redmine Project Access plugin'
   author 'Igor Zubkov'
   description 'This is a plugin for Redmine adds hidden users for project'
   version '0.0.8'
