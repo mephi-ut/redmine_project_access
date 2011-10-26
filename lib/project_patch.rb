@@ -34,14 +34,19 @@ module ProjectPatch
           unless options[:member]
             role = user.logged? ? Role.non_member : Role.anonymous
             if role.allowed_to?(permission)
-              statement_by_role[role] = "(#{Project.table_name}.is_public = #{connection.quoted_true}) OR \
-              (projects.id IN (SELECT #{Project.table_name}.id \
-                               FROM #{Project.table_name}, #{ProjectNonMemberUser.table_name} \
-                               WHERE #{Project.table_name}.id = #{ProjectNonMemberUser.table_name}.project_id \
-                               AND (#{ProjectNonMemberUser.table_name}.user_id = #{user.id} \
-                               OR #{ProjectNonMemberUser.table_name}.group_id IN (#{user.groups.map(&:id).join(',')}))\
-                               ) \
-                              )"
+              statement_by_role[role] = "#{Project.table_name}.is_public = #{connection.quoted_true}"
+
+              if user.groups
+                group_statement = " OR #{ProjectNonMemberUser.table_name}.group_id IN (#{user.groups.map(&:id).join(',')})"
+              end
+
+              add_statement = " OR (projects.id IN (SELECT #{Project.table_name}.id \
+                                FROM #{Project.table_name}, #{ProjectNonMemberUser.table_name} \
+                                WHERE #{Project.table_name}.id = #{ProjectNonMemberUser.table_name}.project_id \
+                                AND (#{ProjectNonMemberUser.table_name}.user_id = #{user.id} \
+                                #{group_statement}))"
+
+              statement_by_role[role] = "(#{statement_by_role[role]}) OR #{add_statement}"
             end
           end
           if user.logged?
