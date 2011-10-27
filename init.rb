@@ -1,9 +1,9 @@
 require 'redmine'
 
-require 'user_patch'
 require 'project_patch'
 require 'projects_helper_patch'
 require 'application_controller_patch'
+require 'user_patch'
 
 Redmine::Plugin.register :redmine_project_access do
   name 'Redmine Project Access plugin'
