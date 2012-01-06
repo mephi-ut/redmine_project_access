@@ -1,9 +1,5 @@
 require 'redmine'
-
-require 'project_patch'
-require 'projects_helper_patch'
-require 'application_controller_patch'
-require 'user_patch'
+require 'dispatcher'
 
 Redmine::Plugin.register :redmine_project_access do
   name 'Redmine Project Access plugin'
@@ -16,5 +12,23 @@ Redmine::Plugin.register :redmine_project_access do
   project_module :redmine_project_access do
     permission :edit_project_access, { :project_access => [:update, :autocomplete_for_users] }
   end
+end
+
+Dispatcher.to_prepare do
+  begin
+    require_dependency 'application'
+  rescue LoadError
+    require_dependency 'application_controller'
+  end
+
+  require_dependency 'project'
+  require_dependency 'projects_helper'
+  require_dependency 'application_controller'
+  require_dependency 'user'
+
+  ApplicationController.send(:include, ApplicationControllerPatch)
+  Project.send(:include, ProjectPatch)
+  ProjectsHelper.send(:include, ProjectsHelperPatch)
+  User.send(:include, UserPatch)
 end
 

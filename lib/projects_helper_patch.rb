@@ -1,5 +1,3 @@
-require_dependency 'projects_helper'
-
 module ProjectsHelperPatch
   def self.included(base)
     base.class_eval do
@@ -21,16 +19,5 @@ module ProjectsHelperPatch
 
     end
   end
-end
-
-require 'dispatcher'
-  Dispatcher.to_prepare do
-    begin
-      require_dependency 'application'
-    rescue LoadError
-      require_dependency 'application_controller'
-    end
-
-  ProjectsHelper.send(:include, ProjectsHelperPatch)
 end
 

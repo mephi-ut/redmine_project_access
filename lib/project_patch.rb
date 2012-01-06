@@ -1,5 +1,3 @@
-require_dependency 'project'
-
 module ProjectPatch
   def self.included(base)
     base.send(:include, InstanceMethods)
@@ -91,16 +89,5 @@ module ProjectPatch
       false
     end
   end
-end
-
-require 'dispatcher'
-  Dispatcher.to_prepare do
-    begin
-      require_dependency 'application'
-    rescue LoadError
-      require_dependency 'application_controller'
-    end
-
-  Project.send(:include, ProjectPatch)
 end
 

@@ -1,5 +1,3 @@
-require_dependency 'application_controller'
-
 module ApplicationControllerPatch
   def self.included(base)
     base.class_eval do
@@ -17,16 +15,5 @@ module ApplicationControllerPatch
 
     end
   end
-end
-
-require 'dispatcher'
-  Dispatcher.to_prepare do
-    begin
-      require_dependency 'application'
-    rescue LoadError
-      require_dependency 'application_controller'
-    end
-
-  ApplicationController.send(:include, ApplicationControllerPatch)
 end
 

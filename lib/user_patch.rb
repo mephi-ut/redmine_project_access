@@ -1,5 +1,4 @@
 require_dependency 'principal'
-require_dependency 'user'
 
 module UserPatch
   def self.included(base)
@@ -44,16 +43,5 @@ module UserPatch
       end
     end
   end
-end
-
-require 'dispatcher'
-  Dispatcher.to_prepare do
-    begin
-      require_dependency 'application'
-    rescue LoadError
-      require_dependency 'application_controller'
-    end
-
-  User.send(:include, UserPatch)
 end
 
