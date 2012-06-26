@@ -1,3 +1,4 @@
+module ProjectAccessPatches
 module ApplicationControllerPatch
   def self.included(base)
     base.class_eval do
@@ -16,4 +17,4 @@ module ApplicationControllerPatch
     end
   end
 end
-
+end

@@ -1,5 +1,6 @@
 require_dependency 'principal'
 
+module ProjectAccessPatches
 module UserPatch
   def self.included(base)
     base.class_eval do
@@ -44,4 +45,4 @@ module UserPatch
     end
   end
 end
-
+end

@@ -1,3 +1,4 @@
+module ProjectAccessPatches
 module ProjectsHelperPatch
   def self.included(base)
     base.class_eval do
@@ -20,4 +21,4 @@ module ProjectsHelperPatch
     end
   end
 end
-
+end

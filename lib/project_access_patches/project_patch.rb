@@ -1,3 +1,4 @@
+module ProjectAccessPatches
 module ProjectPatch
   def self.included(base)
     base.send(:include, InstanceMethods)
@@ -90,4 +91,4 @@ module ProjectPatch
     end
   end
 end
-
+end

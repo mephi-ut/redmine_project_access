@@ -26,9 +26,9 @@ Dispatcher.to_prepare do
   require_dependency 'application_controller'
   require_dependency 'user'
 
-  ApplicationController.send(:include, ApplicationControllerPatch)
-  Project.send(:include, ProjectPatch)
-  ProjectsHelper.send(:include, ProjectsHelperPatch)
-  User.send(:include, UserPatch)
+  ApplicationController.send(:include, ProjectAccessPatches::ApplicationControllerPatch)
+  Project.send(:include, ProjectAccessPatches::ProjectPatch)
+  ProjectsHelper.send(:include, ProjectAccessPatches::ProjectsHelperPatch)
+  User.send(:include, ProjectAccessPatches::UserPatch)
 end
 
