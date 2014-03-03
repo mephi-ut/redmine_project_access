@@ -1,5 +1,5 @@
-<div style="width: 200px">
-  <% form_tag :controller => 'project_access', :action => :update, :method => :post do %>
+<div style="width: 100%">
+  <% form = form_tag({:controller => 'project_access', :action => :update, :method => :post}, :remote => true) do %>
   <%= hidden_field_tag('project_id', @project.id) %>
   <ul>
     <% @project.project_non_member_users.each do |cs| %>
@@ -13,18 +13,16 @@
       <% end %>
     <% end %>
   </ul>
-  <p><%= label_tag "principal_search2", l(:label_principal_search) %><%= text_field_tag 'principal_search2', nil %></p>
-  <%= observe_field(:principal_search2,
-                    :frequency => 0.5,
-                    :update => :principals2,
-                    :url => { :controller => 'project_access', :action => 'autocomplete_for_users' },
-                    :with => 'q') %>
-  <div id="principals2">
-    &nbsp;
-  </div>
-
-  <%= submit_tag l(:button_save) %>
+  <p><%= label_tag "principal_search2", l(:label_principal_search) %></br>
+  	<%= text_field_tag 'principal_search2', nil %></p>
+    <%= javascript_tag("observeSearchfield('principal_search2', 'principals2', '#{escape_javascript autocomplete_for_users_path}')") %>
+    
+   <div id="principals2">
+     &nbsp;
+   </div>
+    <%= submit_tag l(:button_save) %>
 
   <% end %>
+  <%= form if Rails::VERSION::MAJOR >= 3 %>
 </div>
 

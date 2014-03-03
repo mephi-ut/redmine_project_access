@@ -28,10 +28,16 @@ class ProjectAccessController < ApplicationController
   end
 
   def autocomplete_for_users
-    @users = Principal.like(params[:q]).active.find(:all)
+    @users = []
+    q = (params[:q] || params[:term]).to_s.strip.downcase
+
+    if q.present?
+      @users = Principal.like(q).active.find(:all)
+    end  
     render :layout => false
   end
-
+  
+  
 private
 
   def find_project

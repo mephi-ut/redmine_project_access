@@ -1,5 +1,4 @@
 require 'redmine'
-require 'dispatcher'
 
 Redmine::Plugin.register :redmine_project_access do
   name 'Redmine Project Access plugin'
@@ -14,7 +13,15 @@ Redmine::Plugin.register :redmine_project_access do
   end
 end
 
-Dispatcher.to_prepare do
+if Rails::VERSION::MAJOR < 3
+  require 'dispatcher'
+  prepare = Dispatcher
+else
+  prepare = ActionDispatch::Callbacks
+end
+
+
+prepare.to_prepare do
   begin
     require_dependency 'application'
   rescue LoadError
