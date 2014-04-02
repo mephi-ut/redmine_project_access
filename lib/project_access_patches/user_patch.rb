@@ -23,7 +23,7 @@ module UserPatch
             return true
           end
         end
-        allowed_to_without_project_access?(action, context, options)
+        allowed_to_without_project_access?(action, context, options, &block)
       end
     end
   end
