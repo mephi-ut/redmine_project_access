@@ -8,7 +8,7 @@ Redmine::Plugin.register :redmine_project_access do
   url 'http://example.com/path/to/plugin'
   author_url 'http://example.com/about'
 
-  project_module :redmine_project_access do
+  project_module :public_project do
     permission :edit_project_access, { :project_access => [:update, :autocomplete_for_users] }
   end
 end

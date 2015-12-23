@@ -8,15 +8,15 @@ class ProjectAccessController < ApplicationController
     @project = Project.find(params[:project_id])
     if request.post?
       ProjectNonMemberUser.transaction do
-        project = Project.find(:first, :conditions => { :id => params[:project_id]})
+        project = Project.find(params[:project_id])
         ProjectNonMemberUser.delete_all(:project_id => project.id)
         user_ids = []
         user_ids = params[:user_ids] if params[:user_ids]
         user_ids.each do |user_id|
           pnmu = ProjectNonMemberUser.new
-          if user = User.find(:first, :conditions => {:id => user_id})
+          if user = User.find(user_id)
             pnmu.user_id = user.id
-          elsif group = Group.find(:first, :conditions => {:id => user_id})
+          elsif group = Group.find(user_id)
             pnmu.group_id = group.id
           end
           pnmu.project_id = project.id
@@ -32,7 +32,7 @@ class ProjectAccessController < ApplicationController
     q = (params[:q] || params[:term]).to_s.strip.downcase
 
     if q.present?
-      @users = Principal.like(q).active.find(:all)
+      @users = Principal.like(q).active.all
     end  
     render :layout => false
   end

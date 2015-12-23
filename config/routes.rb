@@ -1,7 +1,7 @@
 if Rails::VERSION::MAJOR >= 3
   RedmineApp::Application.routes.draw do
-    match "project_access/update" => 'project_access#update'
-    match "project_access/autocomplete_for_users" => 'project_access#autocomplete_for_users', :via => :get, :as => 'autocomplete_for_users'
+    post "project_access/update" => 'project_access#update'
+    get "project_access/autocomplete_for_users" => 'project_access#autocomplete_for_users', :via => :get, :as => 'autocomplete_for_users'
 #    match "changeauthor/edit" => 'changeauthor#edit'
 #    match "changeauthor/auto_complete" => 'changeauthor#auto_complete', :via => :get, :as => 'auto_complete_users'
   end
